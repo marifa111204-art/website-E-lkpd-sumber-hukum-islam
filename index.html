@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-LKPD PAI & Budi Pekerti - Sumber Hukum Islam</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Amiri:wght@700&display=swap" rel="stylesheet">
+    <!-- html2pdf.js for export -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        arabic: ['"Amiri"', 'serif'],
+                    },
+                    colors: {
+                        islamic: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            800: '#166534',
+                            900: '#14532d',
+                            gold: '#d97706',
+                            goldLight: '#fef3c7',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @media print {
+            .no-print { display: none !important; }
+            body { background: white !important; padding: 0 !important; }
+            .print-card { border: 1px solid #16a34a !important; box-shadow: none !important; }
+        }
+        .bg-pattern {
+            background-color: #f4fbf7;
+            background-image: radial-gradient(#22c55e 0.6px, transparent 0.6px);
+            background-size: 14px 14px;
+        }
+    </style>
+</head>
+<body class="bg-pattern text-slate-800 min-h-screen flex flex-col font-sans pb-12">
+
+    <!-- Top Navigation Header -->
+    <header class="bg-white border-b border-emerald-100 sticky top-0 z-40 shadow-sm no-print">
+        <div class="max-w-5xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-3">
+            <div class="flex items-center space-x-3">
+                <div class="bg-emerald-700 text-amber-300 p-2.5 rounded-2xl shadow-md">
+                    <i class="fa-solid fa-book-quran text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-extrabold text-emerald-950 text-lg leading-tight">E-LKPD PAI & Budi Pekerti</h1>
+                    <p class="text-xs text-emerald-700 font-semibold">Kelas X / Fase E • Bab 4: Sumber Hukum Islam</p>
+                </div>
+            </div>
+
+            <!-- Action Controls -->
+            <div class="flex items-center space-x-2">
+                <button onclick="fillSampleData()" class="px-3.5 py-1.5 bg-amber-50 text-amber-700 hover:bg-amber-100 border border-amber-200 text-xs font-bold rounded-xl transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Isi Contoh
+                </button>
+                <button onclick="resetData()" class="px-3 py-1.5 bg-slate-100 text-slate-600 hover:bg-slate-200 text-xs font-bold rounded-xl transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-rotate-left"></i> Reset
+                </button>
+                <button onclick="exportToPDF()" class="px-4 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-xl shadow transition flex items-center gap-1.5">
+                    <i class="fa-solid fa-file-pdf"></i> Unduh / Cetak PDF
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 bg-emerald-950 text-white px-4 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 no-print border border-emerald-600">
+        <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+        <span id="toast-msg" class="text-xs font-bold">Data tersimpan otomatis</span>
+    </div>
+
+    <!-- Main LKPD Content -->
+    <main class="flex-grow max-w-4xl w-full mx-auto px-4 pt-6 space-y-6">
+
+        <div id="lkpd-paper" class="bg-white rounded-3xl border-2 border-emerald-600/30 p-6 md:p-8 shadow-xl space-y-8 relative overflow-hidden">
+            
+            <!-- Header Banner Graphic -->
+            <div class="bg-gradient-to-r from-emerald-800 via-emerald-700 to-teal-800 text-white rounded-2xl p-6 shadow-md text-center relative overflow-hidden">
+                <div class="absolute -right-6 -bottom-6 opacity-10 text-9xl">
+                    <i class="fa-solid fa-mosque"></i>
+                </div>
+                
+                <span class="inline-block bg-amber-400 text-emerald-950 text-xs md:text-sm font-extrabold px-4 py-1 rounded-full shadow mb-2 uppercase tracking-wide">
+                    LEMBAR KERJA PESERTA DIDIK (LKPD)
+                </span>
+                
+                <h2 class="text-lg md:text-xl font-black text-amber-200">
+                    Mata Pelajaran : PAI & Budi Pekerti | Kelas/Fase : X / Fase E
+                </h2>
+                <h3 class="text-base md:text-lg font-bold text-white mt-1">
+                    Bab 4 : Sumber Hukum Islam <span class="text-amber-300 font-normal">(Sub-Bab: Al-Qur'an Pedoman Utama)</span>
+                </h3>
+            </div>
+
+            <!-- Identitas Kelompok Form -->
+            <div class="bg-amber-50/60 rounded-2xl p-5 border border-amber-200/80 space-y-4">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-grow">
+                        <label class="block text-xs font-bold text-emerald-900 uppercase mb-1 flex items-center gap-1.5">
+                            <i class="fa-solid fa-users text-amber-600"></i> Nama Kelompok
+                        </label>
+                        <input type="text" id="nama-kelompok" oninput="saveData()" placeholder="Contoh: Kelompok 1 (Al-Asr)" class="w-full px-4 py-2.5 rounded-xl border border-amber-300 focus:ring-2 focus:ring-emerald-500 outline-none text-sm font-bold bg-white">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-emerald-900 uppercase mb-2 flex items-center gap-1.5">
+                        <i class="fa-solid fa-user-pen text-amber-600"></i> Anggota Tim
+                    </label>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-emerald-800 w-16">1. (Ketua)</span>
+                            <input type="text" id="anggota-1" oninput="saveData()" placeholder="Nama Ketua Kelompok" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none bg-white">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-emerald-800 w-6 text-right">2.</span>
+                            <input type="text" id="anggota-2" oninput="saveData()" placeholder="Nama Anggota 2" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none bg-white">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-emerald-800 w-16">3.</span>
+                            <input type="text" id="anggota-3" oninput="saveData()" placeholder="Nama Anggota 3" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none bg-white">
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-emerald-800 w-6 text-right">4.</span>
+                            <input type="text" id="anggota-4" oninput="saveData()" placeholder="Nama Anggota 4" class="w-full px-3 py-2 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none bg-white">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TUGAS 1 -->
+            <div class="space-y-5">
+                <div class="bg-gradient-to-r from-emerald-700 to-teal-700 text-white rounded-2xl px-5 py-3 shadow-sm flex items-center justify-between">
+                    <h3 class="font-black text-base md:text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-building-columns text-amber-300"></i>
+                        TUGAS 1 : STIMULUS & ANALISIS KASUS <span class="bg-amber-400 text-emerald-950 text-xs px-2.5 py-0.5 rounded-full font-extrabold ml-1">HOTS</span>
+                    </h3>
+                </div>
+
+                <!-- Kasus Card -->
+                <div class="bg-emerald-50/70 border-2 border-dashed border-emerald-300 rounded-2xl p-5 relative space-y-2">
+                    <span class="bg-emerald-700 text-white text-xs font-bold px-3 py-1 rounded-lg uppercase tracking-wider inline-block">
+                        <i class="fa-solid fa-file-circle-exclamation mr-1"></i> Kasus
+                    </span>
+                    <p class="text-xs md:text-sm text-emerald-950 leading-relaxed font-medium">
+                        Di era modern saat ini, banyak ditemukan masyarakat muslim yang ketika menghadapi sengketa pembagian harta waris atau aturan bisnis online, mereka lebih memilih menggunakan aturan adat atau asumsi pribadi tanpa merujuk terlebih dahulu pada ayat-ayat Al-Qur'an.
+                    </p>
+                    
+                    <!-- Reference helper for Q.S. An-Nisa 59 -->
+                    <div class="pt-2 no-print">
+                        <button onclick="toggleSurahModal()" class="text-xs font-bold text-emerald-700 hover:text-emerald-900 bg-white px-3 py-1.5 rounded-lg border border-emerald-200 shadow-sm transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-book-open text-amber-600"></i> Lihat Teks Q.S. An-Nisa' [4]: 59
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pertanyaan 1 -->
+                <div class="space-y-2 bg-white rounded-2xl p-4 border border-slate-200">
+                    <label class="block text-xs md:text-sm font-bold text-slate-800 flex items-start gap-2">
+                        <span class="w-6 h-6 rounded-full bg-emerald-700 text-white flex items-center justify-center text-xs font-black flex-shrink-0 mt-0.5">1</span>
+                        <span>Berdasarkan Q.S. An-Nisa' [4]:59, bagaimana penilaianmu terhadap tindakan masyarakat pada kasus di atas? Apakah tindakannya dibenarkan? Jelaskan alasannya!</span>
+                    </label>
+                    <textarea id="jawaban-1" oninput="saveData()" rows="4" placeholder="Tuliskan jawaban dan analisis kelompokmu di sini..." class="w-full p-3.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none text-xs md:text-sm font-medium transition"></textarea>
+                </div>
+
+                <!-- Pertanyaan 2 -->
+                <div class="space-y-2 bg-white rounded-2xl p-4 border border-slate-200">
+                    <label class="block text-xs md:text-sm font-bold text-slate-800 flex items-start gap-2">
+                        <span class="w-6 h-6 rounded-full bg-emerald-700 text-white flex items-center justify-center text-xs font-black flex-shrink-0 mt-0.5">2</span>
+                        <span>Mengapa Al-Qur'an diletakkan di urutan pertama sebelum Hadis dan Ijtihad dalam hirarki hukum Islam? Apa bahayanya jika hirarki ini dibalik?</span>
+                    </label>
+                    <textarea id="jawaban-2" oninput="saveData()" rows="4" placeholder="Tuliskan jawaban dan analisis kelompokmu di sini..." class="w-full p-3.5 rounded-xl border border-slate-300 focus:ring-2 focus:ring-emerald-500 outline-none text-xs md:text-sm font-medium transition"></textarea>
+                </div>
+            </div>
+
+            <!-- TUGAS 2 -->
+            <div class="space-y-5">
+                <div class="bg-gradient-to-r from-emerald-700 to-teal-700 text-white rounded-2xl px-5 py-3 shadow-sm flex items-center justify-between">
+                    <h3 class="font-black text-base md:text-lg flex items-center gap-2">
+                        <i class="fa-solid fa-table-cells text-amber-300"></i>
+                        TUGAS 2 : PEMETAAN MATRIKS ISI KANDUNGAN AL-QUR'AN
+                    </h3>
+                </div>
+
+                <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 flex items-center gap-3 text-xs md:text-sm text-emerald-950 font-semibold">
+                    <i class="fa-solid fa-circle-check text-emerald-600 text-xl"></i>
+                    <span>Klasifikasikanlah contoh-contoh pernyataan perilaku di bawah ini ke dalam 3 jenis Hukum Isi Kandungan Al-Qur'an dengan memberi tanda centang!</span>
+                </div>
+
+                <!-- Matrix Table -->
+                <div class="overflow-x-auto rounded-2xl border border-slate-200 shadow-sm">
+                    <table class="w-full text-left border-collapse text-xs md:text-sm">
+                        <thead>
+                            <tr class="bg-emerald-800 text-white font-bold">
+                                <th class="p-3 w-12 text-center border-r border-emerald-700">No</th>
+                                <th class="p-3 border-r border-emerald-700">Pernyataan Perilaku / Hukum</th>
+                                <th class="p-3 w-28 md:w-36 text-center border-r border-emerald-700">Hukum I'tiqadiyah</th>
+                                <th class="p-3 w-28 md:w-36 text-center border-r border-emerald-700">Hukum Khuluqiyah</th>
+                                <th class="p-3 w-32 md:w-44 text-center">Hukum Amaliyah<br><span class="text-[10px] font-normal text-emerald-200">(Ibadah/Muamalah)</span></th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-200">
+                            <!-- Row 1 -->
+                            <tr class="hover:bg-emerald-50/40 transition">
+                                <td class="p-3 text-center font-bold text-slate-600 border-r border-slate-200">1.</td>
+                                <td class="p-3 font-semibold text-slate-800 border-r border-slate-200">Meyakini dengan tulus bahwa Malaikat Raqib dan Atid mencatat amal.</td>
+                                <td class="p-3 text-center border-r border-slate-200">
+                                    <input type="radio" name="matrix-1" value="itiqadiyah" onchange="saveData()" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                                </td>
+                                <td class="p-3 text-center border-r border-slate-200">
+                                    <input type="radio" name="matrix-1" value="khuluqiyah" onchange="saveData()" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                                </td>
+                                <td class="p-3 text-center">
+                                    <input type="radio" name="matrix-1" value="amaliyah" onchange="saveData()" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                                </td>
+                            </tr>
+                            <!-- Row 2 -->
+                            <tr class="hover:bg-emerald-50/40 transition">
+                                <td class="p-3 text-center font-bold text-slate-600 border-r border-slate-200">2.</td>
+                                <td class="p-3 font-semibold text-slate-800 border-r border-slate-200">Melakukan transaksi akad jual beli online secara jujur tanpa penipuan.</td>
+                                <td class="p-3 text-center border-r border-slate-200">
+                                    <input type="radio" name="matrix-2" value="itiqadiyah" onchange="saveData()" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                                </td>
+                                <td class="p-3 text-center border-r border-slate-200">
+                                    <input type="radio" name="matrix-2" value="khuluqiyah" onchange="saveData()" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                                </td>
+                                <td class="p-3 text-center">
+                                    <input type="radio" name="matrix-2" value="amaliyah" onchange="saveData()" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                                </td>
+                            </tr>
+                            <!-- Row 3 -->
+                            <tr class="hover:bg-emerald-50/40 transition">
+                                <td class="p-3 text-center font-bold text-slate-600 border-r border-slate-200">3.</td>
+                                <td class="p-3 font-semibold text-slate-800 border-r border-slate-200">Mengendalikan emosi dan bersikap sopan santun kepada guru dan orang tua.</td>
+                                <td class="p-3 text-center border-r border-slate-200">
+                                    <input type="radio" name="matrix-3" value="itiqadiyah" onchange="saveData()" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                                </td>
+                                <td class="p-3 text-center border-r border-slate-200">
+                                    <input type="radio" name="matrix-3" value="khuluqiyah" onchange="saveData()" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                                </td>
+                                <td class="p-3 text-center">
+                                    <input type="radio" name="matrix-3" value="amaliyah" onchange="saveData()" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                                </td>
+                            </tr>
+                            <!-- Row 4 -->
+                            <tr class="hover:bg-emerald-50/40 transition">
+                                <td class="p-3 text-center font-bold text-slate-600 border-r border-slate-200">4.</td>
+                                <td class="p-3 font-semibold text-slate-800 border-r border-slate-200">Menjalankan kewajiban Shalat Fardhu 5 waktu secara tertib.</td>
+                                <td class="p-3 text-center border-r border-slate-200">
+                                    <input type="radio" name="matrix-4" value="itiqadiyah" onchange="saveData()" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                                </td>
+                                <td class="p-3 text-center border-r border-slate-200">
+                                    <input type="radio" name="matrix-4" value="khuluqiyah" onchange="saveData()" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                                </td>
+                                <td class="p-3 text-center">
+                                    <input type="radio" name="matrix-4" value="amaliyah" onchange="saveData()" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                                </td>
+                            </tr>
+                            <!-- Row 5 -->
+                            <tr class="hover:bg-emerald-50/40 transition">
+                                <td class="p-3 text-center font-bold text-slate-600 border-r border-slate-200">5.</td>
+                                <td class="p-3 font-semibold text-slate-800 border-r border-slate-200">Menjauhi sifat iri hati (hasad) dan prasangka buruk (su'udzon).</td>
+                                <td class="p-3 text-center border-r border-slate-200">
+                                    <input type="radio" name="matrix-5" value="itiqadiyah" onchange="saveData()" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                                </td>
+                                <td class="p-3 text-center border-r border-slate-200">
+                                    <input type="radio" name="matrix-5" value="khuluqiyah" onchange="saveData()" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                                </td>
+                                <td class="p-3 text-center">
+                                    <input type="radio" name="matrix-5" value="amaliyah" onchange="saveData()" class="w-5 h-5 text-emerald-600 focus:ring-emerald-500 cursor-pointer">
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Footer Motto Banner -->
+            <div class="bg-emerald-950 text-amber-300 rounded-2xl py-3 px-6 text-center font-extrabold text-xs md:text-sm uppercase tracking-widest shadow-inner">
+                ✨ Al-Qur'an, Pedoman Hidup Umat Islam ✨
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Modal Pop-Up Q.S. An-Nisa 59 -->
+    <div id="surah-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden no-print">
+        <div class="bg-white rounded-3xl max-w-xl w-full p-6 shadow-2xl border border-emerald-200 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h4 class="font-extrabold text-emerald-900 text-base flex items-center gap-2">
+                    <i class="fa-solid fa-book-open text-amber-600"></i> Q.S. An-Nisa' [4]: 59
+                </h4>
+                <button onclick="toggleSurahModal()" class="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 font-bold flex items-center justify-center transition">
+                    ✕
+                </button>
+            </div>
+
+            <!-- Ayat Arab -->
+            <div class="bg-amber-50/60 p-4 rounded-2xl border border-amber-200 text-right leading-loose">
+                <p class="font-arabic text-2xl text-slate-800">
+                    يٰٓاَيُّهَا الَّذِيْنَ اٰمَنُوْٓا اَطِيْعُوا اللّٰهَ وَاَطِيْعُوا الرَّسُوْلَ وَاُولِى الْاَمْرِ مِنْكُمْۚ فَاِنْ تَنَازَعْتُمْ فِيْ شَيْءٍ فَرُدُّوْهُ اِلَى اللّٰهِ وَالرَّسُوْلِ اِنْ كُنْتُمْ تُؤْمِنُوْنَ بِاللّٰهِ وَالْيَوْمِ الْاٰخِرِۗ ذٰلِكَ خَيْرٌ وَّاَحْسَنُ تَأْوِيْلًا
+                </p>
+            </div>
+
+            <!-- Terjemahan -->
+            <div class="text-xs md:text-sm text-slate-700 space-y-2">
+                <strong class="text-emerald-900 block font-bold">Artinya:</strong>
+                <p class="italic leading-relaxed">
+                    "Wahai orang-orang yang beriman! Taatilah Allah dan taatilah Rasul (Muhammad), dan Ulil Amri (pemegang kekuasaan) di antara kamu. Kemudian, jika kamu berbeda pendapat tentang sesuatu, maka kembalikanlah kepada Allah (Al-Qur'an) dan Rasul (sunnahnya), jika kamu beriman kepada Allah dan hari kemudian. Yang demikian itu lebih utama (bagimu) dan lebih baik akibatnya."
+                </p>
+            </div>
+
+            <div class="pt-2 text-right">
+                <button onclick="toggleSurahModal()" class="px-4 py-2 bg-emerald-700 text-white rounded-xl text-xs font-bold hover:bg-emerald-800 transition">
+                    Tutup Bacaan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            loadSavedData();
+        };
+
+        function toggleSurahModal() {
+            const modal = document.getElementById('surah-modal');
+            modal.classList.toggle('hidden');
+        }
+
+        function saveData() {
+            const data = {
+                kelompok: document.getElementById('nama-kelompok').value,
+                anggota1: document.getElementById('anggota-1').value,
+                anggota2: document.getElementById('anggota-2').value,
+                anggota3: document.getElementById('anggota-3').value,
+                anggota4: document.getElementById('anggota-4').value,
+                jawaban1: document.getElementById('jawaban-1').value,
+                jawaban2: document.getElementById('jawaban-2').value,
+                matrix: {}
+            };
+
+            for (let i = 1; i <= 5; i++) {
+                const checked = document.querySelector(`input[name="matrix-${i}"]:checked`);
+                if (checked) {
+                    data.matrix[i] = checked.value;
+                }
+            }
+
+            localStorage.setItem('lkpd_pai_bab4_data', JSON.stringify(data));
+            showToast('Tersimpan Otomatis');
+        }
+
+        function loadSavedData() {
+            const raw = localStorage.getItem('lkpd_pai_bab4_data');
+            if (!raw) return;
+
+            try {
+                const data = JSON.parse(raw);
+                if (data.kelompok) document.getElementById('nama-kelompok').value = data.kelompok;
+                if (data.anggota1) document.getElementById('anggota-1').value = data.anggota1;
+                if (data.anggota2) document.getElementById('anggota-2').value = data.anggota2;
+                if (data.anggota3) document.getElementById('anggota-3').value = data.anggota3;
+                if (data.anggota4) document.getElementById('anggota-4').value = data.anggota4;
+                if (data.jawaban1) document.getElementById('jawaban-1').value = data.jawaban1;
+                if (data.jawaban2) document.getElementById('jawaban-2').value = data.jawaban2;
+
+                if (data.matrix) {
+                    for (let i = 1; i <= 5; i++) {
+                        if (data.matrix[i]) {
+                            const radio = document.querySelector(`input[name="matrix-${i}"][value="${data.matrix[i]}"]`);
+                            if (radio) radio.checked = true;
+                        }
+                    }
+                }
+            } catch (e) {
+                console.error(e);
+            }
+        }
+
+        function fillSampleData() {
+            document.getElementById('nama-kelompok').value = 'Kelompok 1 (Al-Hikmah)';
+            document.getElementById('anggota-1').value = 'Ahmad Al-Fatih';
+            document.getElementById('anggota-2').value = 'Siti Nurhaliza';
+            document.getElementById('anggota-3').value = 'Muhammad Rizky';
+            document.getElementById('anggota-4').value = 'Fatimah Az-Zahra';
+
+            document.getElementById('jawaban-1').value = 
+                "Tindakan masyarakat tersebut tidak dibenarkan. Berdasarkan Q.S. An-Nisa' [4]:59, umat Islam diwajibkan untuk mengembalikan setiap perselisihan/sengketa kepada Allah (Al-Qur'an) dan Rasul-Nya (Hadis) terlebih dahulu. Mengabaikan firman Al-Qur'an demi aturan adat atau asumsi pribadi bertentangan dengan prinsip ketaatan hukum Islam.";
+
+            document.getElementById('jawaban-2').value = 
+                "Al-Qur'an diletakkan di urutan pertama karena merupakan wahyu langsung dari Allah SWT yang bersifat mutlak kebenarannya (Qat'i). Hadis berfungsi mejelaskan Al-Qur'an, sedangkan Ijtihad dilakukan jika belum ditemukan secara eksplisit. Bahayanya jika hirarki dibalik adalah timbulnya kesesatan hukum, karena rasio atau adat manusia mendahului petunjuk wahyu ilahi.";
+
+            // Set matrix radio buttons
+            const matrixAnswers = {
+                1: 'itiqadiyah',
+                2: 'amaliyah',
+                3: 'khuluqiyah',
+                4: 'amaliyah',
+                5: 'khuluqiyah'
+            };
+
+            for (let i = 1; i <= 5; i++) {
+                const radio = document.querySelector(`input[name="matrix-${i}"][value="${matrixAnswers[i]}"]`);
+                if (radio) radio.checked = true;
+            }
+
+            saveData();
+            showToast('Contoh jawaban berhasil dimuat!');
+        }
+
+        function resetData() {
+            if (confirm('Apakah Anda yakin ingin menghapus seluruh isian LKPD?')) {
+                localStorage.removeItem('lkpd_pai_bab4_data');
+                location.reload();
+            }
+        }
+
+        function exportToPDF() {
+            const element = document.getElementById('lkpd-paper');
+            showToast('Menyiapkan dokumen PDF...', 'fa-spinner fa-spin text-amber-400');
+
+            const opt = {
+                margin:       0.3,
+                filename:     `LKPD_PAI_Bab4_${document.getElementById('nama-kelompok').value || 'Kelompok'}.pdf`,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 2 },
+                jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                showToast('PDF Berhasil Diunduh!');
+            });
+        }
+
+        let toastTimeout;
+        function showToast(msg, iconClass = 'fa-circle-check text-emerald-400') {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            document.getElementById('toast-icon').className = `fa-solid ${iconClass}`;
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 2300);
+        }
+    </script>
+</body>
+</html>
